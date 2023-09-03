@@ -1,4 +1,4 @@
-# The_word-s_best_games
+# The world's best games
 Developing a variety of games to enhance my skills in the C programming language.
 
     Guessing game
