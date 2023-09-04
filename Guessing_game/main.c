@@ -1,12 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 void introduction()
 {
     printf("\n*******************************************");
     printf("\n*Welcome to the world's best guessing game*");
     printf("\n*******************************************\n");
-    printf("\nThe objective of the game is to guess a specific number correctly.\n");
+    printf("\nThe goal of the game is to accurately guess a specific number within the range of 1 to 100.\n");
+}
+
+double createSecretNumber(){
+    int seconds = time(0);
+    srand(seconds);
+    return rand() % 100 + 1;    
 }
 
 void checkGuess(int guess, int secretNumber, int attempts)
@@ -43,7 +50,7 @@ double scorePoints(double totalPoints, double lostPoints)
 void guess()
 {
     int guess;
-    int secretNumber = rand() % 100 + 1;
+    int secretNumber = createSecretNumber();
     double totalPoints = 1000.0;
 
     printf("\nSecret number: %d\n", secretNumber); // debug print
