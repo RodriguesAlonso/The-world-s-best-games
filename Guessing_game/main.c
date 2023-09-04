@@ -23,20 +23,31 @@ void checkGuess(int guess, int secretNumber, int attempts)
     {
         printf("\nYour guess is too high!\n");
     }
-    if (attempts == 1)
+    else if (attempts == 1)
     {
         printf("\nYou ran out of attempts!\n");
     }
-    
 }
 
-void playGuess()
+double lostPoints(int guess, int secretNumber)
+{
+    double lost = abs(guess - secretNumber) / 2.0;
+    return lost;
+}
+
+double scorePoints(double totalPoints, double lostPoints)
+{
+    return totalPoints - lostPoints;
+}
+
+void guess()
 {
     int guess;
     int secretNumber = rand() % 100 + 1;
-    int attempts = 5;
-    introduction();
+    double totalPoints = 1000.0;
 
+    printf("\nSecret number: %d\n", secretNumber); // debug print
+    int attempts = 7;
     do
     {
         printf("\nNumber of remaining attempts, attempts: %d\n", attempts);
@@ -44,11 +55,18 @@ void playGuess()
         scanf("%d", &guess);
         printf("\nYour guess is %d\n", guess);
 
+        totalPoints = scorePoints(totalPoints, lostPoints(guess, secretNumber));
+
         checkGuess(guess, secretNumber, attempts);
-
-        attempts--;
-
+        attempts--;        
+        printf("\nYour final score is %2.f\n", totalPoints);
     } while (guess != secretNumber && attempts != 0);
+}
+
+void playGuess()
+{
+    introduction();
+    guess();
 };
 
 int main()
