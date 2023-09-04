@@ -20,7 +20,12 @@ void checkGuess(int guess, int secretNumber, int attempts)
 {
     if (guess == secretNumber)
     {
-        printf("\nCongratulations! You have guessed the correct number!\n");
+        printf("\n***********Congratulations! You have guessed the correct number!***********\n");
+    }
+    else if (attempts == 1)
+    {
+        printf("\nYou ran out of attempts!\n");
+        printf("\n***********Game is over***********\n");
     }
     else if (guess < secretNumber)
     {
@@ -29,10 +34,6 @@ void checkGuess(int guess, int secretNumber, int attempts)
     else if (guess > secretNumber)
     {
         printf("\nYour guess is too high!\n");
-    }
-    else if (attempts == 1)
-    {
-        printf("\nYou ran out of attempts!\n");
     }
 }
 
@@ -53,7 +54,6 @@ void guess()
     int secretNumber = createSecretNumber();
     double totalPoints = 1000.0;
 
-    printf("\nSecret number: %d\n", secretNumber); // debug print
     int attempts = 7;
     do
     {
@@ -66,8 +66,8 @@ void guess()
 
         checkGuess(guess, secretNumber, attempts);
         attempts--;        
-        printf("\nYour final score is %2.f\n", totalPoints);
     } while (guess != secretNumber && attempts != 0);
+        printf("\nYour final score: ==>%2.f<==\n", totalPoints);
 }
 
 void playGuess()
