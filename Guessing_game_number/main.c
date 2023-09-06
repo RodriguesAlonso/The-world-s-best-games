@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
+#include "guessing.h"
 void introduction()
 {
     printf("\n*******************************************");
