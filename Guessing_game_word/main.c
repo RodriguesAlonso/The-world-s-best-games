@@ -19,7 +19,7 @@ char *getLineRandom()
     if (fileOpen == NULL)
     {
         perror("Error: Could not open file");
-        return NULL; // Retornar um ponteiro nulo em caso de erro
+        return NULL;
     }
 
     char line[1024];
@@ -30,6 +30,7 @@ char *getLineRandom()
     while (fgets(line, sizeof(line), fileOpen) != NULL)
     {
         contLine++;
+
         if (rand() % contLine == 0)
         {
             strcpy(randomLine, line);
@@ -42,16 +43,14 @@ char *getLineRandom()
 
 int secreatWord(char *category, char *word, char *tip)
 {
-    char *randomLine = getLineRandom(); // Correção: atribuir o valor retornado por getLineRandom a randomLine
+    char *randomLine = getLineRandom();
 
     if (randomLine != NULL)
     {
         sscanf(randomLine, "%[^,], %[^,], %[^,]", category, word, tip);
-        printf("Category: %s, Word: %s, Tip: %s\n", category, word, tip);
-
-        // Imprime a linha aleatória escolhida
-        printf("Linha aleatória do fileOpen:\n%s", randomLine);
-        free(randomLine); // Liberar a memória alocada para randomLine
+        //printf("Category: %s, Word: %s, Tip: %s\n", category, word, tip); debug print
+        printf("The secret word category is =>%s<=\n", category);
+        free(randomLine);
     }
 
     return 0;
@@ -59,6 +58,7 @@ int secreatWord(char *category, char *word, char *tip)
 
 void chosenLetter(char letters[26], int *attempts)
 {
+    printf("Your %dº attempt\n", *attempts + 1);
     char letter;
     printf("choose a letter: ");
     scanf(" %c", &letter);
@@ -67,55 +67,98 @@ void chosenLetter(char letters[26], int *attempts)
     (*attempts)++;
 }
 
+int hits(char word, char letters[26], int attempts)
+{
+    int hit = 0;
+    for (int j = 0; j < attempts; j++)
+    {
+        if (letters[j] == word)
+        {
+            hit = 1;
+            break;
+        }
+    }
+    return hit;
+}
+
+char *makeGuess()
+{
+    char *guess = malloc(26);
+    if (guess == NULL)
+    {
+        perror("Memory allocation failed");
+        exit(1);
+    }
+
+    printf("\nMake a guess: ");
+    scanf(" %25s", guess);
+    printf("\nyour guess is %s\n", guess);
+
+    return guess;
+}
+
+void makeBoard(char word[26], char letters[26], int attempts)
+{
+    for (int i = 0; i < strlen(word); i++)
+    {
+        int hit = hits(word[i], letters, attempts);
+        if (hit)
+        {
+            printf("%c", word[i]);
+        }
+        else
+        {
+            printf("_ ");
+        }
+    }
+}
+
+int checkGuess(char *guess, char *word,int attempts, char *tip)
+{
+    int winner = 0;
+
+    if (strcmp(guess, word) == 0)
+    {
+        winner = 1;
+        printf("\n***********Congratulations! You have guessed the correct word!***********\n");
+    }
+    else
+    {
+        winner = 0;
+        printf("\nwrong guess!\n");
+    }
+    if (winner = 0 && attempts > 5){
+        printf("\nYou have no more tries!\n=>GameOver</\n");        
+    }
+    if (attempts == 3){
+        printf("Tip:\n==>%s", tip);
+    }
+    return winner;
+}
+
 int main()
 {
-    int attempts = 6;
-    int winner = 0;
+    char secretWord[20];
     char letters[26];
-    char letter[26];
-
+    int attempts = 0;
     char category[26];
     char word[26];
     char tip[60];
-    secreatWord(category, word, tip);
+    int winner = 0;
+    char* guess;
     introduction();
-    char secretWord[20];
-    printf("\n %s\n", secretWord);
-    printf("\n %s\n", word);
-    for (int i = 0; i < strlen(word); i++)
-    {
-        printf("Letter: %c\n", word[i]);
-    }
+    secreatWord(category, word, tip);
 
     do
     {
-        printf("You have %d  chutes\n", attempts);
+        makeBoard(word, letters, attempts);
+        printf("\n");
+        chosenLetter(letters, &attempts);
+        makeBoard(word, letters, attempts);
+        printf("\n");
+        guess = makeGuess();
+        winner = checkGuess(guess, word, attempts, tip);
+    } while (attempts < 6 && !winner);
 
-        for (int i = 0; i < strlen(word); i++)
-        {
-            int hit = 0;
-            for (int j = 0; j < attempts; j++)
-            {
-                if (letters[j] == word[i])
-                {
-                    hit = 1;
-                    break;
-                }
-            }
-            if (hit)
-            {
-                printf("%c", word[i]);
-            }
-            else
-            {
-                printf("_ ");
-            }
-        }
-    printf("\n");
-    chosenLetter(letters, &attempts);
-    }
-    while (!winner);
-return 0;
+    return 0;
 }
-
-
