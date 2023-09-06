@@ -5,7 +5,7 @@
 void introduction()
 {
     printf("\n*******************************************");
-    printf("\n*Welcome to the world's best guessing game*");
+    printf("\n*Welcome to the world's best number guessing game*");
     printf("\n*******************************************\n");
     printf("\nThe goal of the game is to accurately guess a specific number within the range of 1 to 100.\n");
 }

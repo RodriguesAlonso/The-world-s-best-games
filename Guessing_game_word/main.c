@@ -1,85 +1,121 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 void introduction()
 {
+    printf("\n************************************************");
+    printf("\n* Welcome to the world's best word guessing game *");
+    printf("\n*************************************************\n");
+    printf("\nWord Guessing Game: The computer selects a random word, and the player must guess what that word is by providing letter guesses.");
+    printf("\nThe player has six attempts before losing the game.\n");
 }
 
-char word()
+char *getLineRandom()
 {
     const char *words = "words.csv";
-    FILE *fp = fopen(words, "r");
-
-    if (fp == NULL)
+    FILE *fileOpen = fopen(words, "r");
+    if (fileOpen == NULL)
     {
-        perror("Cannot open words list file");
-        return 1;
-    };
-
-    char line[2048];
-    char class[60];
-    char word[60];
-    char tip[60];
-    int i = 0;
-
-    while (fscanf(fp, "%[^,]%*c,%[^,]%*c,%[^,]%*c", class, word, tip) != EOF)
-    {
-        printf("%s %s %s", class, word, tip);
+        perror("Error: Could not open file");
+        return NULL; // Retornar um ponteiro nulo em caso de erro
     }
-    fclose(fp);
-    return 0;
-};
 
-void bank_space()
-{
+    char line[1024];
+    char randomLine[1024];
+    int contLine = 0;
+
+    srand(time(NULL));
+    while (fgets(line, sizeof(line), fileOpen) != NULL)
+    {
+        contLine++;
+        if (rand() % contLine == 0)
+        {
+            strcpy(randomLine, line);
+        }
+    }
+
+    fclose(fileOpen);
+    return strdup(randomLine);
 }
 
-void choice_word() {}
+int secreatWord(char *category, char *word, char *tip)
+{
+    char *randomLine = getLineRandom(); // Correção: atribuir o valor retornado por getLineRandom a randomLine
 
-void play() {}
+    if (randomLine != NULL)
+    {
+        sscanf(randomLine, "%[^,], %[^,], %[^,]", category, word, tip);
+        printf("Category: %s, Word: %s, Tip: %s\n", category, word, tip);
 
-void guess() {}
+        // Imprime a linha aleatória escolhida
+        printf("Linha aleatória do fileOpen:\n%s", randomLine);
+        free(randomLine); // Liberar a memória alocada para randomLine
+    }
+
+    return 0;
+}
+
+void chosenLetter(char letters[26], int *attempts)
+{
+    char letter;
+    printf("choose a letter: ");
+    scanf(" %c", &letter);
+
+    letters[(*attempts)] = letter;
+    (*attempts)++;
+}
 
 int main()
 {
-    char palavrasecreta[20];
-    sprintf(palavrasecreta, "MELANCIA");
+    int attempts = 6;
+    int winner = 0;
+    char letters[26];
+    char letter[26];
 
-    int acertou = 0;
-    int enforcou = 0;
+    char category[26];
+    char word[26];
+    char tip[60];
+    secreatWord(category, word, tip);
+    introduction();
+    char secretWord[20];
+    printf("\n %s\n", secretWord);
+    printf("\n %s\n", word);
+    for (int i = 0; i < strlen(word); i++)
+    {
+        printf("Letter: %c\n", word[i]);
+    }
 
-    char chutes[26];
-    int tentativas = 0;
+    do
+    {
+        printf("You have %d  chutes\n", attempts);
 
-    do {
-
-        for(int i = 0; i < strlen(palavrasecreta); i++) {
-            int achou = 0;
-
-            for(int j = 0; j < tentativas; j++) {
-                if(chutes[j] == palavrasecreta[i]) {
-                    achou = 1;
+        for (int i = 0; i < strlen(word); i++)
+        {
+            int hit = 0;
+            for (int j = 0; j < attempts; j++)
+            {
+                if (letters[j] == word[i])
+                {
+                    hit = 1;
                     break;
                 }
             }
-
-            if(achou) {
-                printf("%c ", palavrasecreta[i]);
-            } else {
+            if (hit)
+            {
+                printf("%c", word[i]);
+            }
+            else
+            {
                 printf("_ ");
             }
         }
-        printf("\n");
-
-        char chute;
-        printf("Qual letra? ");
-        scanf(" %c", &chute);
-
-        chutes[tentativas] = chute;
-        tentativas++;
-
-
-    } while (!acertou && !enforcou);
-    
+    printf("\n");
+    chosenLetter(letters, &attempts);
+    }
+    while (!winner);
+return 0;
 }
+
+
