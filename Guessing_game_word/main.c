@@ -49,7 +49,7 @@ int secreatWord(char *category, char *word, char *tip)
     if (randomLine != NULL)
     {
         sscanf(randomLine, "%[^,], %[^,], %[^,]", category, word, tip);
-        //printf("Category: %s, Word: %s, Tip: %s\n", category, word, tip); debug print
+        // printf("Category: %s, Word: %s, Tip: %s\n", category, word, tip); debug print
         printf("The secret word category is =>%s<=\n", category);
         free(randomLine);
     }
@@ -114,27 +114,28 @@ void makeBoard(char word[26], char letters[26], int attempts)
     }
 }
 
-int checkGuess(char *guess, char *word,int attempts, char *tip)
+int checkGuess(char *guess, char *word, int attempts, char *tip)
 {
-    int winner = 0;
+    int endGame = 0;
 
     if (strcmp(guess, word) == 0)
     {
-        winner = 1;
+        endGame = 1;
         printf("\n***********Congratulations! You have guessed the correct word!***********\n");
     }
-    else
+
+    else if (attempts > 5)
     {
-        winner = 0;
-        printf("\nwrong guess!\n");
+        printf("\nYou have no more tries!\n=>GameOver</\n");
+        endGame = 1;
+        printf("the secreat word is ****%s****\n", word);
     }
-    if (winner = 0 && attempts > 5){
-        printf("\nYou have no more tries!\n=>GameOver</\n");        
-    }
-    if (attempts == 3){
+    else if (attempts == 3)
+    {
         printf("Tip:\n==>%s", tip);
     }
-    return winner;
+    
+    return endGame;
 }
 
 int main()
@@ -145,8 +146,8 @@ int main()
     char category[26];
     char word[26];
     char tip[60];
-    int winner = 0;
-    char* guess;
+    int endGame = 0;
+    char *guess;
     introduction();
     secreatWord(category, word, tip);
 
@@ -158,8 +159,8 @@ int main()
         makeBoard(word, letters, attempts);
         printf("\n");
         guess = makeGuess();
-        winner = checkGuess(guess, word, attempts, tip);
-    } while (attempts < 6 && !winner);
+        endGame = checkGuess(guess, word, attempts, tip);
+    } while (!endGame);
 
     return 0;
 }
