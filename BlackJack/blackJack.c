@@ -51,20 +51,91 @@ void initializeDeck(Card *deck, int numberCards)
     }
 }
 
-void shuffleDeck(Card deck[], int numberCards){    
-        srand(time(NULL));
-    for (int i = numberCards -1; i > 0; i--)
+void shuffleDeck(Card deck[], int numberCards)
+{
+    srand(time(NULL));
+    for (int i = numberCards - 1; i > 0; i--)
     {
         int nRandom = rand() % (i + 1);
         Card temp = deck[i];
         deck[i] = deck[nRandom];
         deck[nRandom] = temp;
-        //printf("-=-ID-=%d-=-=-=-=-=-=Random-=%d-=-=-=-=-=-=-=-=-=-=-\n",i, nRandom);
-       // printf("TEMP suit: %s rank: %s value: %d\n", temp.suit, temp.rank ,temp.value);
-        printf("CARD suit: %s rank: %s value: %d\n", deck[i].suit, deck[i].rank ,deck[i].value);
-        //printf("DECK RANDOM suit: %s rank: %s value: %d\n", deck[nRandom].suit, deck[nRandom].rank ,deck[nRandom].value);
-        
-        
+        // printf("-=-ID-=%d-=-=-=-=-=-=Random-=%d-=-=-=-=-=-=-=-=-=-=-\n",i, nRandom);
+        // printf("TEMP suit: %s rank: %s value: %d\n", temp.suit, temp.rank ,temp.value);
+        // printf("CARD suit: %s rank: %s value: %d\n", deck[i].suit, deck[i].rank, deck[i].value);
+        // printf("DECK RANDOM suit: %s rank: %s value: %d\n", deck[nRandom].suit, deck[nRandom].rank ,deck[nRandom].value);
     }
+}
+void distributeCards(Card *deck, HAND *dealer, HAND *player, int *numberCards)
+{
+
+    dealer->card[0] = deck[*numberCards - 1];
+    HAND *newHand = (HAND *)malloc(sizeof(HAND));
+    if (newHand == NULL)
+    {
+        perror("malloc failed");
+        exit(1);
+    }
+    newHand->card[0] = dealer->card[0];
+    newHand->nextCard = NULL;
+
+    printf("\nDistribute dealer");
+    printCard(dealer);
+    (*numberCards)--;    
+
+    // player->card[0] = deck[*numberCards-2];
+}
+
+void printDeck(Card *deck, int numberCards)
+{
+
+    for (int i = 0; i < numberCards; i++)
+    {
+        printf("id %d  CARD suit: %s rank: %s value: %d\n", i, deck[i].suit, deck[i].rank, deck[i].value);
+    }
+}
+
+void hit(Card *deck, HAND *head, int *numberCards)
+{
+    HAND *newCard = (HAND *)malloc(sizeof(HAND));
+    if (newCard == NULL)
+    {
+        perror("malloc failure");
+        exit(1);
+    }
+    newCard->card[0] = deck[*numberCards - 1];
+    newCard->nextCard = NULL;
+    printf("\n NEW CARD Rank %s Suit %s Value %d \n", newCard->card[0].rank, newCard->card[0].suit, newCard->card[0].value);
+
+    appHand(head, newCard);
+}
+
+void appHand(HAND *head, HAND *addCard)
+{
+
+    if (head == NULL)
+    {
+        head = addCard;
+    }
+    else
+    {
+        HAND *current = head;
+        while (current->nextCard != NULL)
+        {
+            current = current->nextCard;
+        }
+        current->nextCard = addCard;
+        printf("\n CURRENT CARD Rank %s Suit %s Value %d \n", current->card[0].rank, current->card[0].suit, current->card[0].value);        
+    }
+}
+
+void printCard(HAND *hand)
+{
     
+    while (hand != NULL)
+    {
+        printf("\n Hand CARD Rank %s Suit %s Value %d \n", hand->card->rank, hand->card->suit, hand->card->value);
+        hand = hand->nextCard;        
+    }
+    printf("NULL\n");
 }

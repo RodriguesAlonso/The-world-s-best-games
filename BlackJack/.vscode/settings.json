@@ -4,6 +4,7 @@
         "stdlib.h": "c",
         "blackjack.h": "c",
         "string.h": "c",
-        "type_traits": "c"
+        "type_traits": "c",
+        "typeinfo": "c"
     }
 }

@@ -4,15 +4,26 @@
 #include <time.h>
 #include "blackJack.h"
 
-Card deck[52];
-int numberCards = 0;
-
 int main()
 {
     int numberOfCards = 52;
+    int *sizeDesck = &numberOfCards;
+
     Card deck[numberOfCards];
+
     initializeDeck(deck, numberOfCards);
-    shuffleDeck(deck, numberOfCards); //
+    shuffleDeck(deck, numberOfCards);
+
+    HAND player[50];
+    HAND dealer[50];
+    
+    
+    distributeCards(deck, dealer, player, &numberOfCards);
+    printf("\n-=NumberOfCard %d-\n", numberOfCards);    
+    hit(deck, dealer, &numberOfCards);
+    
+    printCard(dealer);
+
     return 0;
 }
 
@@ -23,4 +34,3 @@ int main()
         printf("suit: %s rank: %s value: %d\n", deck[i].suit, deck[i].rank ,deck[i].value);
     }
  */
-
