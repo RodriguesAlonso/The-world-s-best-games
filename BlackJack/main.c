@@ -23,8 +23,13 @@ int main()
     hit(deck, dealer, &numberOfCards);
     
     printCard(dealer);
+    calculatePoints(dealer);  
+    
+    hit(deck, dealer, &numberOfCards);
+    calculatePoints(dealer);          
+    
+    printCard(dealer);
 
-    return 0;
 }
 
 /*

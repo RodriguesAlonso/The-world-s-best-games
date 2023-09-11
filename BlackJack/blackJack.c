@@ -83,7 +83,6 @@ void distributeCards(Card *deck, HAND *dealer, HAND *player, int *numberCards)
     printCard(dealer);
     (*numberCards)--;    
 
-    // player->card[0] = deck[*numberCards-2];
 }
 
 void printDeck(Card *deck, int numberCards)
@@ -125,7 +124,6 @@ void appHand(HAND *head, HAND *addCard)
             current = current->nextCard;
         }
         current->nextCard = addCard;
-        printf("\n CURRENT CARD Rank %s Suit %s Value %d \n", current->card[0].rank, current->card[0].suit, current->card[0].value);        
     }
 }
 
@@ -137,5 +135,16 @@ void printCard(HAND *hand)
         printf("\n Hand CARD Rank %s Suit %s Value %d \n", hand->card->rank, hand->card->suit, hand->card->value);
         hand = hand->nextCard;        
     }
-    printf("NULL\n");
+    //printf("NULL\n");
 }
+
+void calculatePoints(HAND *hand){
+    int points = 0;
+    while (hand != NULL)
+    {
+        points += hand->card->value;
+        hand = hand->nextCard;        
+    }
+    printf("\n Total Points: %d\n", points);
+}
+
