@@ -6,17 +6,16 @@
 
 void introduction()
 {
-    printf("\n************************************************");
-    printf("\n* Welcome to the world's best Black Jack game  *");
-    printf("\n*************************************************\n");
-    printf("\nThe objective of the game is to have a hand with a total value higher than the dealer's hand, without exceeding 21.\nHere are the basic rules of the game:");
-    printf("\nCard Values:\n\tNumbered cards (2 through 10) are worth their face value.\nFace cards (Jack, Queen, King) are each worth 10 points\nAn Ace can be worth 1 or 11 points, depending on what benefits the player's hand.");
-    printf("\nDealing Cards:\n\tThe dealer deals two cards to each player, including themselves. However, one of the dealer's cards is face-up (visible to players), while the other is face-down (hidden).\n");
-    printf("\nPlayer Options:\n\tHit: Request an additional card from the dealer.\n\tStand: Keep the current hand without taking any more cards.\n");
-    printf("\nObjective:\n\tThe goal is to get as close to 21 as possible without exceeding it. Going over 21 results in an automatic loss, regardless of the dealer's hand.\n");
-    printf("\nDealer's Turn:\n\tAfter all players have made their decisions, the dealer reveals their face-down card. The dealer must hit (take another card) until their hand totals 17 or higher.");
-    printf("\n************************************************");
-    printf("\n");
+    char textIntro[2048];
+    FILE* f = fopen("introduction.txt", "r");
+    if (f == NULL){
+        perror("Couldn't open introduction.txt");
+    }   
+    while(fgets(textIntro, sizeof(textIntro), f) !=NULL)
+    {
+        printf("%s", textIntro);
+    }
+    
 }
 
 void initializeDeck(Card *deck, int numberCards)

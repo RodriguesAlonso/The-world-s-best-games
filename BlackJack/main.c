@@ -6,6 +6,7 @@
 
 int main()
 {
+    introduction();
     int numberOfCards = 52;
     Card deck[numberOfCards];
     HAND player[50];

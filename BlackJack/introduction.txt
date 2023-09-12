@@ -1,0 +1,26 @@
+    ************************************************
+    * Welcome to the world's best Black Jack game  *
+    *************************************************
+    The objective of the game is to have a hand with a total 
+    value higher than the dealer's hand, without exceeding 21.
+    basic rules of the game:
+    Card Values
+        Numbered cards (2 through 10) are worth their face value.
+        Face cards (Jack, Queen, King) are each worth 10 points.
+        An Ace can be worth 1 or 11 points.
+    Dealing Cards:
+        The dealer deals two cards to each player, including themselves. 
+        However, one of the dealer's cards is face-up
+        while the other is face-down (hidden).
+    Player Options:
+        Hit: Request an additional card from the dealer.
+        Stand: Keep the current hand without taking any more cards.
+    Objective:
+        The goal is to get as close to 21 as possible without exceeding it. 
+        Going over 21 results in an automatic loss, regardless of the dealer's hand.
+    Dealer's Turn:
+        After the player have made his decision, 
+        the dealer reveals their face-down card. 
+        The dealer must hit (take another card) until their hand totals 17 or higher.
+    ************************************************
+    
