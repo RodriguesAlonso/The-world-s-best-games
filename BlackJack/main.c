@@ -16,7 +16,8 @@ int main()
     shuffleDeck(deck, numberOfCards);
 
     distributeCards(deck, dealer, player, &numberOfCards);
-    printHand(player);
+    
+    getChoice(deck, player, &numberOfCards);
     turnDealer(deck, dealer, &numberOfCards);
     resolution(player, dealer);
 }

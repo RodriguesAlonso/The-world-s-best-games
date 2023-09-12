@@ -74,6 +74,9 @@ void distributeCards(Card *deck, HAND *dealer, HAND *player, int *numberCards)
     hit(deck, dealer, numberCards);
 
     printf("\n*** DELEAR reveals his card: %s of %s  value: %d ***\n", dealer->card[0].rank, dealer->card[0].suit, dealer->card[0].value);
+
+    printf("\n -= Your hand is now: =-\n");
+    printHand(player);
 }
 
 void printDeck(Card *deck, int numberCards)
@@ -147,6 +150,29 @@ int calculatePoints(HAND *hand)
     return points;
 }
 
+void getChoice(Card *deck, HAND *head, int *numberCards)
+{
+    char choise[10];
+    printf("\n** Make a choise hit: \n*>Request an additional card\n*>stand: Keep the current hand without taking any more cards.***\n");
+    printf("\n** hit or stand => ");
+    scanf("%s", choise);
+    if (strcmp(choise, "hit") == 0)
+    {
+        hit(deck, head, numberCards);
+        printf("\n -= Your hand is now: =-\n");
+        printHand(head);
+        getChoice(deck, head, numberCards);
+    }
+    else if (strcmp(choise, "stand") == 0)
+    {
+        return;
+    }
+    else
+    {
+        printf("\n**Invalid choice, please enter 'hit' or 'stand' try again,\n");
+        getChoice(deck, head, numberCards);
+    }
+}
 void turnDealer(Card *deck, HAND *dealer, int *numberOfCards)
 {
 
@@ -159,6 +185,7 @@ void turnDealer(Card *deck, HAND *dealer, int *numberOfCards)
     {
         printf("\n Dealer pick another card\n");
         hit(deck, dealer, numberOfCards);
+        printf("\n -= His hand is now: =-\n");
         dealer->point = calculatePoints(dealer);
     }
 
@@ -167,7 +194,7 @@ void turnDealer(Card *deck, HAND *dealer, int *numberOfCards)
 
 void resolution(HAND *player, HAND *dealer)
 {
-    printf("\n*** RESOLUTION\n");
+    printf("\n*** RESOLUTION ***\n");
     player->point = calculatePoints(player);
     dealer->point = calculatePoints(dealer);
 
@@ -176,22 +203,21 @@ void resolution(HAND *player, HAND *dealer)
 
     if (player->point > 21)
     {
-        printf("\nPlayer lose your point is more than 21: %d\n", player->point);
+        printf("\nPlayer lose your point is more than 21: your point is:%d\n", player->point);
     }
-    if (dealer->point > 21)
+    else if (dealer->point > 21)
     {
         printf("\ncongratulations! Your win!\nDelear past 21 points ");
-        
     }
-    if (dealer->point < player->point)
+    else if (dealer->point < player->point)
     {
         printf("\n ***congratulations! Your win!***\n\t your point more than the dealer's point\n");
     }
-    if (dealer->point > player->point && dealer->point <= 21)
+    else if (dealer->point > player->point && dealer->point <= 21)
     {
         printf("\nThe player loses his point is less than the dealer's point:");
     }
-    if (dealer->point == player->point)
+    else
     {
         printf("\n---DRAW_GAME---\n");
     }
