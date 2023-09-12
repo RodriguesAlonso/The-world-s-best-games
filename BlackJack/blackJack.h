@@ -6,6 +6,7 @@ typedef struct{
 
 struct Hand {
     Card card[10];
+    int point;
     struct Hand* nextCard;
 };
 
@@ -17,12 +18,12 @@ void shuffleDeck(Card deck[], int numberCards);
 void distributeCards(Card *deck, HAND *dealer, HAND *player, int *numberCards);
 void hit(Card *deck, HAND *head, int *numberCards);
 void appHand(HAND* head, HAND *newCard);
-void calculatePoints(HAND *head);
-void play();
-void game();
-void dealCards();
-void resolution();
+int calculatePoints(HAND *head);
+void turnDealer(Card *deck, HAND *dealer, int *numberOfCards);
+void resolution(HAND *player, HAND *dealer);
+
 int getChoice();
 void printDeck(Card *deck, int numberCards);
-void printCard(HAND* hand)
+void printHand(HAND* hand);
+void printPoint(HAND *hand);
 ;

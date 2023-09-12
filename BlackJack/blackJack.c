@@ -60,29 +60,20 @@ void shuffleDeck(Card deck[], int numberCards)
         Card temp = deck[i];
         deck[i] = deck[nRandom];
         deck[nRandom] = temp;
-        // printf("-=-ID-=%d-=-=-=-=-=-=Random-=%d-=-=-=-=-=-=-=-=-=-=-\n",i, nRandom);
-        // printf("TEMP suit: %s rank: %s value: %d\n", temp.suit, temp.rank ,temp.value);
-        // printf("CARD suit: %s rank: %s value: %d\n", deck[i].suit, deck[i].rank, deck[i].value);
-        // printf("DECK RANDOM suit: %s rank: %s value: %d\n", deck[nRandom].suit, deck[nRandom].rank ,deck[nRandom].value);
     }
 }
 void distributeCards(Card *deck, HAND *dealer, HAND *player, int *numberCards)
 {
-
     dealer->card[0] = deck[*numberCards - 1];
-    HAND *newHand = (HAND *)malloc(sizeof(HAND));
-    if (newHand == NULL)
-    {
-        perror("malloc failed");
-        exit(1);
-    }
-    newHand->card[0] = dealer->card[0];
-    newHand->nextCard = NULL;
+    player->card[0] = deck[*numberCards - 2];
 
-    printf("\nDistribute dealer");
-    printCard(dealer);
-    (*numberCards)--;    
+    (*numberCards)--;
+    (*numberCards)--;
 
+    hit(deck, player, numberCards);
+    hit(deck, dealer, numberCards);
+
+    printf("\n*** DELEAR reveals his card: %s of %s  value: %d ***\n", dealer->card[0].rank, dealer->card[0].suit, dealer->card[0].value);
 }
 
 void printDeck(Card *deck, int numberCards)
@@ -96,6 +87,7 @@ void printDeck(Card *deck, int numberCards)
 
 void hit(Card *deck, HAND *head, int *numberCards)
 {
+
     HAND *newCard = (HAND *)malloc(sizeof(HAND));
     if (newCard == NULL)
     {
@@ -104,8 +96,10 @@ void hit(Card *deck, HAND *head, int *numberCards)
     }
     newCard->card[0] = deck[*numberCards - 1];
     newCard->nextCard = NULL;
-    printf("\n NEW CARD Rank %s Suit %s Value %d \n", newCard->card[0].rank, newCard->card[0].suit, newCard->card[0].value);
 
+    // printf("\n=> NEW CARD %s of %s Value %d \n", newCard->card[0].rank, newCard->card[0].suit, newCard->card[0].value);
+
+    (*numberCards)--;
     appHand(head, newCard);
 }
 
@@ -114,7 +108,7 @@ void appHand(HAND *head, HAND *addCard)
 
     if (head == NULL)
     {
-        head = addCard;
+        printf("\n HEAD == NULL\n");
     }
     else
     {
@@ -127,24 +121,79 @@ void appHand(HAND *head, HAND *addCard)
     }
 }
 
-void printCard(HAND *hand)
+void printHand(HAND *hand)
 {
-    
+    int i = 0;
     while (hand != NULL)
     {
-        printf("\n Hand CARD Rank %s Suit %s Value %d \n", hand->card->rank, hand->card->suit, hand->card->value);
-        hand = hand->nextCard;        
+        printf("\n * %s of %s Value = %d \n", hand->card->rank, hand->card->suit, hand->card->value);
+        hand = hand->nextCard;
     }
-    //printf("NULL\n");
 }
 
-void calculatePoints(HAND *hand){
+void printPoint(HAND *hand)
+{
+    printf("\n*** \n> Player Points = %d <\n***", hand->point);
+}
+
+int calculatePoints(HAND *hand)
+{
     int points = 0;
     while (hand != NULL)
     {
         points += hand->card->value;
-        hand = hand->nextCard;        
+        hand = hand->nextCard;
     }
-    printf("\n Total Points: %d\n", points);
+    return points;
 }
 
+void turnDealer(Card *deck, HAND *dealer, int *numberOfCards)
+{
+
+    dealer->point = calculatePoints(dealer);
+    printf("\n***Delear reveals his hand \n");
+    printHand(dealer);
+    printf("\n=> Dealer Points = %d\n", dealer->point);
+
+    while (dealer->point <= 17)
+    {
+        printf("\n Dealer pick another card\n");
+        hit(deck, dealer, numberOfCards);
+        dealer->point = calculatePoints(dealer);
+    }
+
+    printHand(dealer);
+}
+
+void resolution(HAND *player, HAND *dealer)
+{
+    printf("\n*** RESOLUTION\n");
+    player->point = calculatePoints(player);
+    dealer->point = calculatePoints(dealer);
+
+    printf("\n=> Player Points = %d\n", player->point);
+    printf("\n=> Dealer Points = %d\n", dealer->point);
+
+    if (player->point > 21)
+    {
+        printf("\nPlayer lose your point is more than 21: %d\n", player->point);
+    }
+    if (dealer->point > 21)
+    {
+        printf("\ncongratulations! Your win!\nDelear past 21 points ");
+        
+    }
+    if (dealer->point < player->point)
+    {
+        printf("\n ***congratulations! Your win!***\n\t your point more than the dealer's point\n");
+    }
+    if (dealer->point > player->point && dealer->point <= 21)
+    {
+        printf("\nThe player loses his point is less than the dealer's point:");
+    }
+    if (dealer->point == player->point)
+    {
+        printf("\n---DRAW_GAME---\n");
+    }
+    printf("\n");
+};

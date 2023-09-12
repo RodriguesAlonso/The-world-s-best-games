@@ -7,35 +7,16 @@
 int main()
 {
     int numberOfCards = 52;
-    int *sizeDesck = &numberOfCards;
-
     Card deck[numberOfCards];
-
-    initializeDeck(deck, numberOfCards);
-    shuffleDeck(deck, numberOfCards);
-
     HAND player[50];
     HAND dealer[50];
-    
-    
+
+    initializeDeck(deck, numberOfCards);
+
+    shuffleDeck(deck, numberOfCards);
+
     distributeCards(deck, dealer, player, &numberOfCards);
-    printf("\n-=NumberOfCard %d-\n", numberOfCards);    
-    hit(deck, dealer, &numberOfCards);
-    
-    printCard(dealer);
-    calculatePoints(dealer);  
-    
-    hit(deck, dealer, &numberOfCards);
-    calculatePoints(dealer);          
-    
-    printCard(dealer);
-
+    printHand(player);
+    turnDealer(deck, dealer, &numberOfCards);
+    resolution(player, dealer);
 }
-
-/*
-    printf("-=-=-=-=-=-=-=-=-=");
-    for (int i = 0; i < 52; i++)
-    {
-        printf("suit: %s rank: %s value: %d\n", deck[i].suit, deck[i].rank ,deck[i].value);
-    }
- */
