@@ -1,0 +1,128 @@
+Blackjack Card Game Documentation
+Overview
+
+This documentation describes the implementation of a simple Blackjack card game in C. 
+
+Data Structures
+Card
+
+    Description: Represents a playing card with properties like suit, rank, and value.
+    Members:
+        char suit[10]: The suit of the card (e.g., "Hearts").
+        char rank[10]: The rank of the card (e.g., "Ace").
+        int value: The numerical value of the card in the game.
+    Usage: This structure is used to define individual playing cards in the game of Blackjack. The `typedef` allows you to use `Card` as a type name for this structure.
+
+HAND
+
+    Description: Represents a hand of cards for a player or dealer.
+    Members:
+        Card card[10]: An array of Card structures to hold the player's or dealer's cards. 
+        int point: An integer representing the total points of the hand.
+        `struct Hand *nextCard`: A pointer to the next card in the hand.
+    Usage: This structure is used to keep track of the cards in a player's or dealer's hand and their total points. The `nextCard` pointer is used to form a linked list of cards in the hand.
+
+introduction
+
+    Description: This function is responsible for displaying an introduction text from a file named "introduction.txt".
+    Usage: It can be called at the beginning of the game to provide introductory information to the player.
+
+initializeDeck
+
+    Description: This function initializes a deck of cards with standard values, suits, and ranks.
+    Parameters:
+        Card *deck: A pointer to an array of Card structures representing the deck.
+        int numberCards: The total number of cards in the deck.
+    Usage: Call this function to set up the deck before starting a game.
+
+shuffleDeck
+
+    Description: This function shuffles the deck of cards using a random number generator.
+    Parameters:
+        Card deck[]: An array of Card structures representing the deck.
+        int numberCards: The total number of cards in the deck.
+    Usage: Call this function to randomize the order of cards in the deck.
+
+distributeCards
+
+    Description: This function distributes cards to the dealer and player, starting the game.
+    Parameters:
+        Card *deck: A pointer to an array of Card structures representing the deck.
+        HAND *dealer: A pointer to the dealer's hand.
+        HAND *player: A pointer to the player's hand.
+        int *numberCards: A pointer to the total number of cards in the deck.
+    Usage: Call this function to begin a new round of Blackjack. It deals initial cards to the dealer and player and sets up the game.
+
+hit
+
+    Description: This function allows a player (either the dealer or the player) to receive an additional card from the deck.
+    Parameters:
+        Card *deck: A pointer to an array of Card structures representing the deck.
+        HAND *head: A pointer to the head of a player's or dealer's hand.
+        int *numberCards: A pointer to the total number of cards in the deck.
+    Usage: Call this function when a player chooses to "hit," adding a new card to their hand.
+
+appHand
+
+    Description: This function appends a new card to a player's or dealer's hand.
+    Parameters:
+        HAND *head: A pointer to the head of a player's or dealer's hand.
+        HAND *addCard: A pointer to the card to be added.
+    Usage: It is used internally by the hit function to add a new card to a hand.
+
+
+
+calculatePoints
+
+    Description: This function calculates the total points of a player's or dealer's hand based on the values of the cards.
+    Parameters:
+        HAND *hand: A pointer to the head of a player's or dealer's hand.
+    Usage: It is used internally to determine the total points of a hand.
+
+getChoice
+
+    Description: This function allows the player to choose whether to "hit" or "stand" during their turn.
+    Parameters:
+        Card *deck: A pointer to an array of Card structures representing the deck.
+        HAND *head: A pointer to the player's hand.
+        int *numberCards: A pointer to the total number of cards in the deck.
+    Usage: Call this function to get the player's decision during their turn.
+
+turnDealer
+
+    Description: This function manages the dealer's turn, where the dealer continues to pick cards until their total points reach 17 or higher.
+    Parameters:
+        Card *deck: A pointer to an array of Card structures representing the deck.
+        HAND *dealer: A pointer to the dealer's hand.
+        int *numberOfCards: A pointer to the total number of cards in the deck.
+    Usage: Call this function after the player's turn to manage the dealer's actions.
+
+resolution
+
+    Description: This function determines the game's outcome and prints the result, including whether the player wins, loses, or the game is a draw.
+    Parameters:
+        HAND *player: A pointer to the player's hand.
+        HAND *dealer: A pointer to the dealer's hand.
+    Usage: Call this function at the end of the game to evaluate and display the result.
+
+printHand
+
+    Description: This function prints the details of the cards in a player's or dealer's hand.
+    Parameters:
+        HAND *hand: A pointer to the head of a player's or dealer's hand.
+    Usage: Call this function to display the cards in a player's or dealer's hand.
+
+printPoint
+
+    Description: This function prints the total points of a player's or dealer's hand.
+    Parameters:
+        HAND *hand: A pointer to the head of a player's or dealer's hand.
+    Usage: Call this function to display the total points of a player's or dealer's hand.
+
+printDeck
+
+    Description: This function prints the details of the entire deck of cards.
+    Parameters:
+        Card *deck: A pointer to an array of Card structures representing the deck.
+        int numberCards: The total number of cards in the deck.
+    Usage: Use this function for debugging purposes to display the contents of the deck.
